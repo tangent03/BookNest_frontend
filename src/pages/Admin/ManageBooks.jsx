@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiCheckCircle, FiEdit, FiPlus, FiSearch, FiTrash2, FiX } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../../config/api';
 import { useAuth } from '../../context/AuthContext';
-
-const API_URL = 'http://localhost:4002';
 
 const ManageBooks = () => {
   const navigate = useNavigate();

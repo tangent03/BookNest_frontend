@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiLock } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
+import API_URL from '../config/api';
 import { useAuth } from '../context/AuthContext';
 
 const Footer = () => {
@@ -17,7 +18,7 @@ const Footer = () => {
     setIsLoading(true);
 
     // In a real app, this should be a server-side validation
-    fetch(`http://localhost:4002/api/admin/validate`, {
+    fetch(`${API_URL}/api/admin/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

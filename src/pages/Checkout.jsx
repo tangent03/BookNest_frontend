@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiCheck, FiCreditCard, FiLock, FiShoppingBag } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config/api';
 import { useAuth } from '../context/AuthContext';
-
-const API_URL = 'http://localhost:4002'; // Backend URL
 
 const Checkout = () => {
   const [cart, setCart] = useState([]);

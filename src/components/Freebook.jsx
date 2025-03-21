@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiCheck, FiMail } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import API_URL from '../config/api';
 
 const Freebook = () => {
     const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ const Freebook = () => {
         
         try {
             console.log('Sending subscription request for:', email);
-            const response = await axios.post('http://localhost:4002/send-email', {
+            const response = await axios.post(`${API_URL}/send-email`, {
                 email,
                 subject: 'Welcome to BookStore Newsletter!',
                 message: 'Thank you for subscribing to our newsletter! We will keep you updated with the latest books, promotions, and exclusive offers.'

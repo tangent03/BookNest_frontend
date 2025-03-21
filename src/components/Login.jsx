@@ -3,6 +3,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import API_URL from '../config/api';
 
 // Import the image from the assets folder
 import LoginImage from '../assets/LoginImage.jpeg';
@@ -20,7 +21,7 @@ const Login = () => {
             email: data.email,
             password: data.password
         }
-        await axios.post("http://localhost:4002/user/login", userInfo)
+        await axios.post(`${API_URL}/user/login`, userInfo)
             .then((res) => {
                 console.log(res.data)
                 if (res.data) {

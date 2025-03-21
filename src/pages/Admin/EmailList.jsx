@@ -2,9 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiDownload, FiFilter, FiMail, FiRefreshCw, FiSearch, FiTrash2 } from 'react-icons/fi';
+import API_URL from '../../config/api';
 import { useAuth } from '../../context/AuthContext';
-
-const API_URL = 'http://localhost:4002';
 
 const EmailList = () => {
   const { currentUser } = useAuth();

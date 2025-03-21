@@ -4,9 +4,8 @@ import { toast } from 'react-hot-toast';
 import { FiBarChart2, FiBook, FiDollarSign, FiHome, FiMail, FiPieChart, FiShoppingBag, FiTrendingUp, FiUsers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Area, AreaChart, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import API_URL from '../../config/api';
 import { useAuth } from '../../context/AuthContext';
-
-const API_URL = 'http://localhost:4002';
 
 const Dashboard = () => {
   const navigate = useNavigate();

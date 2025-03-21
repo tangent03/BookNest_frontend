@@ -2,13 +2,14 @@ import { Box, Stack } from '@chakra-ui/react'
 import axios from 'axios'
 import React from 'react'
 import Card from './Card'
+import API_URL from './config/api'
 
 const Homes = () => {
     const checkoutHandler = async (amount) => {
 
-        const { data:{key}} = await axios.get("http://www.localhost:4002/api/getkey");
+        const { data:{key}} = await axios.get(`${API_URL}/api/getkey`);
 
-        const { data:{order}} = await axios.post("http://localhost:4002/api/checkout",{
+        const { data:{order}} = await axios.post(`${API_URL}/api/checkout`,{
           amount
         })
 

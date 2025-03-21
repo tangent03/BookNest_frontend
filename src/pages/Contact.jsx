@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { FiMail, FiMessageSquare, FiUser } from 'react-icons/fi';
+import API_URL from '../config/api';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -21,29 +22,24 @@ const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if (!formData.name || !formData.email || !formData.message) {
+            toast.error('Please fill in all required fields');
+            return;
+        }
+        
         setLoading(true);
         
         try {
-            const response = await axios.post('http://localhost:4002/contact/send', formData);
+            const response = await axios.post(`${API_URL}/contact/send`, formData);
             
-            if (response.data.success) {
-                toast.success('Message sent successfully! A confirmation email has been sent to your inbox.');
-                // Reset form
-                setFormData({
-                    name: '',
-                    email: '',
-                    subject: '',
-                    message: ''
-                });
-            } else {
-                toast.error(response.data.message || 'Failed to send message. Please try again.');
+            if (response.status === 200) {
+                toast.success('Message sent successfully!');
+                setFormData({ name: '', email: '', subject: '', message: '' });
             }
         } catch (error) {
             console.error('Error sending message:', error);
-            toast.error(
-                error.response?.data?.message || 
-                'Failed to send message. Please try again later.'
-            );
+            toast.error(error.response?.data?.message || 'Failed to send message');
         } finally {
             setLoading(false);
         }

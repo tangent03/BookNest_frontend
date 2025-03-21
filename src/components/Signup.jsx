@@ -3,6 +3,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import API_URL from '../config/api';
 import Login from './Login';
 
 const Signup = () => {
@@ -18,7 +19,7 @@ const Signup = () => {
             email: data.email,
             password: data.password
         };
-        await axios.post("http://localhost:4002/user/signup", userInfo)
+        await axios.post(`${API_URL}/user/signup`, userInfo)
             .then((res) => {
                 console.log(res.data);
                 if (res.data) {

@@ -1,11 +1,10 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { FiCalendar, FiCheck, FiEye, FiFilter, FiSearch, FiTruck, FiX } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-
-const API_URL = 'http://localhost:4002';
+import API_URL from '../../config/api';
 
 const OrdersManagement = () => {
   const navigate = useNavigate();

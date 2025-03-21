@@ -2,8 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
-const API_URL = 'http://localhost:4002';
+import API_URL from '../../config/api';
 
 const AddBook = () => {
   const navigate = useNavigate();
