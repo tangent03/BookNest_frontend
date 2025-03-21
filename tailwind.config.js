@@ -1,0 +1,107 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#4338CA',
+          50: '#EEF2FF',
+          100: '#E0E7FF',
+          200: '#C7D2FE',
+          300: '#A5B4FC',
+          400: '#818CF8',
+          500: '#6366F1',
+          600: '#4F46E5',
+          700: '#4338CA',
+          800: '#3730A3',
+          900: '#312E81',
+        },
+        secondary: {
+          DEFAULT: '#EC4899',
+          50: '#FDF2F8',
+          100: '#FCE7F3',
+          200: '#FBCFE8',
+          300: '#F9A8D4',
+          400: '#F472B6',
+          500: '#EC4899',
+          600: '#DB2777',
+          700: '#BE185D',
+          800: '#9D174D',
+          900: '#831843',
+        },
+        accent: {
+          DEFAULT: '#059669',
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
+        },
+        dark: {
+          DEFAULT: '#0F172A',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+        }
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
+      boxShadow: {
+        book: '0 15px 25px -5px rgba(0, 0, 0, 0.1), 5px 5px 10px rgba(0, 0, 0, 0.04), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+    require('daisyui'),
+  ],
+  daisyui: {
+    themes: [{
+      light: {
+        primary: "#4338CA",
+        secondary: "#EC4899",
+        accent: "#059669",
+        neutral: "#4B5563",
+        "base-100": "#F9FAFB",
+        "base-200": "#F3F4F6",
+        "base-300": "#E5E7EB",
+        info: "#3B82F6",
+        success: "#10B981",
+        warning: "#F59E0B",
+        error: "#EF4444",
+      },
+      dark: {
+        primary: "#4338CA",
+        secondary: "#EC4899",
+        accent: "#059669",
+        neutral: "#1F2937",
+        "base-100": "#0F172A",
+        "base-200": "#1E293B",
+        "base-300": "#334155",
+        info: "#3B82F6",
+        success: "#10B981",
+        warning: "#F59E0B",
+        error: "#EF4444",
+      }
+    }],
+  },
+}

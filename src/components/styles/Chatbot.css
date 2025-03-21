@@ -1,0 +1,103 @@
+/* Chatbot.css */
+.chatbot-container {
+    width: 350px; /* Adjust width as needed */
+    height: 500px; /* Adjust height as needed */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+  }
+  
+/* Typing indicator animation */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  margin: 0 2px;
+  background-color: #9ca3af;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.7;
+}
+
+.typing-indicator span:nth-child(1) {
+  animation: pulse 1s infinite 0.1s;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation: pulse 1s infinite 0.3s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation: pulse 1s infinite 0.5s;
+}
+
+/* Slide up animation for chat window */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Add this to your existing tailwind.config.js extend.animation section */
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button hover effect */
+.btn:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Message bubble animations */
+[class*="user"] > div {
+  animation: fadeInRight 0.3s ease forwards;
+}
+
+[class*="bot"] > div:not(.typing-indicator) {
+  animation: fadeInLeft 0.3s ease forwards;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+  
