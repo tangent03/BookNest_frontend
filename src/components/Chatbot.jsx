@@ -24,17 +24,6 @@ const Chatbot = () => {
         scrollToBottom();
     }, [messages]);
 
-    useEffect(() => {
-        // Auto open the chat after 5 seconds if user hasn't interacted
-        const timer = setTimeout(() => {
-            if (messages.length === 1) {
-                setIsOpen(true);
-            }
-        }, 5000);
-
-        return () => clearTimeout(timer);
-    }, [messages]);
-
     // Quick reply suggestions
     const suggestions = [
         { id: 1, text: "How do I place an order?" },
@@ -50,37 +39,43 @@ const Chatbot = () => {
         
         // Check for keywords to determine response
         if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-            return "Hello there! How can I assist you with your book shopping today?";
+            return "Hello there! 👋 I'm your BookNest assistant. How can I make your book shopping experience better today? Feel free to ask about our collection, promotions, or anything book-related!";
         } 
         else if (message.includes('order') || message.includes('place an order')) {
-            return "To place an order, simply browse our collection, add books to your cart, and proceed to checkout. You'll need to create an account or log in if you haven't already. Need more specific help with ordering?";
+            return "📚 Ordering is simple! Browse our collection, add books to your cart, and proceed to checkout. You'll need an account to complete your purchase. We offer secure payment options and fast shipping. Need help with a specific part of the ordering process?";
         }
         else if (message.includes('genre') || message.includes('categories')) {
-            return "We offer a wide range of genres including Fiction, Non-Fiction, Mystery, Science Fiction, Fantasy, Biography, History, Self-Help, and Children's books. You can find these categories in our navigation menu. Is there a specific genre you're interested in?";
+            return "📖 At BookNest, we pride ourselves on our diverse collection! We offer Fiction, Non-Fiction, Mystery, Science Fiction, Fantasy, Biography, History, Self-Help, Children's books, and many more. Each category is carefully curated with bestsellers and hidden gems. Which genre interests you most?";
         }
         else if (message.includes('return') || message.includes('return policy')) {
-            return "Our return policy allows returns within 30 days of purchase. Books must be in original condition. Please contact our customer service with your order number to initiate a return.";
+            return "🔄 Our customer-friendly return policy allows returns within 30 days of purchase. Books must be in their original condition with no damage. Simply contact our customer service team with your order number, and we'll guide you through the process. We aim to process refunds within 5-7 business days.";
         }
         else if (message.includes('shipping') || message.includes('delivery')) {
-            return "We offer standard shipping (3-5 business days), express shipping (1-2 business days), and international shipping (7-14 business days). Shipping costs are calculated at checkout based on your location and order weight.";
+            return "🚚 We offer flexible shipping options to meet your needs:\n• Standard: 3-5 business days ($3.99 or free over $35)\n• Express: 1-2 business days ($7.99)\n• International: 7-14 business days (varies by location)\n\nTracking information is provided via email once your order ships. Would you like to know about any current shipping promotions?";
         }
         else if (message.includes('find') || message.includes('finding a book') || message.includes('search')) {
-            return "You can search for books using the search bar at the top of our website. You can search by title, author, or ISBN. You can also browse by genre using our category menu. Would you like me to recommend some popular books?";
+            return "🔍 Finding your next great read is easy! Use our search bar at the top to look up titles, authors, or ISBN numbers. You can also browse by genre, new releases, or bestsellers. Our advanced filters help narrow down by price range, format, and reader ratings. Would you like me to recommend some titles based on your interests?";
         }
         else if (message.includes('account') || message.includes('login') || message.includes('sign up')) {
-            return "You can create an account or login using the buttons in the top right corner of the website. An account allows you to track orders, save payment methods, and create wishlists.";
+            return "👤 Creating an account with BookNest gives you access to exclusive benefits! You can track orders, save payment methods, create wishlists, and receive personalized recommendations. Plus, members get early access to sales and special promotions. Sign up takes less than a minute - just click the account icon in the top right corner!";
         }
         else if (message.includes('payment') || message.includes('pay')) {
-            return "We accept credit/debit cards, PayPal, and gift cards. All payments are securely processed and your information is never stored on our servers.";
+            return "💳 We accept multiple secure payment methods for your convenience:\n• Credit/debit cards (Visa, Mastercard, Amex)\n• PayPal\n• Gift cards\n• Apple Pay/Google Pay\n\nAll transactions are encrypted and we never store your complete payment information. If you have any issues with payment, our customer service team is ready to help!";
+        }
+        else if (message.includes('discount') || message.includes('coupon') || message.includes('promo')) {
+            return "🏷️ Great timing! We currently have several promotions running:\n• 15% off your first order with code WELCOME15\n• Buy 2 get 1 free on selected titles\n• Free shipping on orders over $35\n• Student discount of 10% with verification\n\nYou can apply these at checkout. Would you like me to tell you about our rewards program too?";
+        }
+        else if (message.includes('bestseller') || message.includes('popular') || message.includes('recommend')) {
+            return "📚 Our current bestsellers include:\n• 'The Midnight Library' by Matt Haig\n• 'Atomic Habits' by James Clear\n• 'The Seven Husbands of Evelyn Hugo' by Taylor Jenkins Reid\n• 'Project Hail Mary' by Andy Weir\n\nBased on your interest, I'd be happy to recommend more titles in specific genres!";
         }
         else if (message.includes('thank')) {
-            return "You're welcome! Is there anything else I can help you with?";
+            return "You're very welcome! 😊 I'm delighted to help make your BookNest experience better. Is there anything else you'd like to know about our services or collection? Happy reading!";
         }
         else if (message.includes('bye') || message.includes('goodbye')) {
-            return "Thank you for chatting with BookNest Assistant. Have a great day and happy reading!";
+            return "Thank you for chatting with BookNest Assistant! 📚 Have a wonderful day and happy reading! If you need anything else, I'll be here when you return. Don't forget to check out our latest arrivals!";
         }
         else {
-            return "I'm not sure I understand. Could you please rephrase or choose from one of the suggested topics below? Alternatively, you can email our support team at support@booknest.com for more complex inquiries.";
+            return "I'm not quite sure I understand what you're looking for. Could you please rephrase your question, or select one of the suggested topics below? For more complex inquiries, you can also reach our support team at support@booknest.com - we typically respond within 24 hours.";
         }
     };
 

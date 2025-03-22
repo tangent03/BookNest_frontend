@@ -11,16 +11,25 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [adminVerified, setAdminVerified] = useState(false);
   
   useEffect(() => {
     // Check if user is logged in from localStorage
-    const user = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('user');
+    const storedToken = localStorage.getItem('token');
     const adminStatus = localStorage.getItem('adminVerified');
     
-    if (user) {
-      setCurrentUser(JSON.parse(user));
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+    
+    if (storedToken) {
+      setToken(storedToken);
+      
+      // Set authorization header for all future requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
     }
     
     if (adminStatus) {
@@ -46,13 +55,22 @@ export const AuthProvider = ({ children }) => {
         id: response.data.user._id,
         name: response.data.user.fullname,
         email: response.data.user.email,
-        role: response.data.user.role || (email.includes('admin') ? 'admin' : 'user'), // Use role from DB if available
-        // Add this to keep track of password for verification when changing
+        role: response.data.user.role || (email.includes('admin') ? 'admin' : 'user'),
         passwordLastChanged: response.data.user.passwordLastChanged || new Date().toISOString()
       };
       
+      const jwtToken = response.data.token;
+      
+      // Store user data and token
       setCurrentUser(userData);
+      setToken(jwtToken);
+      
+      // Set token for future requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
+      
       localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('token', jwtToken);
+      
       toast.success('Login successful!');
       return userData;
     } catch (error) {
@@ -76,8 +94,15 @@ export const AuthProvider = ({ children }) => {
           role: email.includes('admin') ? 'admin' : 'user',
           passwordLastChanged: new Date().toISOString()
         };
+        
+        const mockToken = 'mock-jwt-token';
+        
         setCurrentUser(userData);
+        setToken(mockToken);
+        
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', mockToken);
+        
         toast.success('Login successful! (Mock data)');
         return userData;
       }
@@ -106,8 +131,18 @@ export const AuthProvider = ({ children }) => {
         role: 'user'
       };
       
+      const jwtToken = response.data.token;
+      
+      // Store user data and token
       setCurrentUser(userData);
+      setToken(jwtToken);
+      
+      // Set token for future requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
+      
       localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('token', jwtToken);
+      
       toast.success('Registration successful!');
       return userData;
     } catch (error) {
@@ -137,8 +172,15 @@ export const AuthProvider = ({ children }) => {
           email,
           role: 'user'
         };
+        
+        const mockToken = 'mock-jwt-token';
+        
         setCurrentUser(userData);
+        setToken(mockToken);
+        
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', mockToken);
+        
         toast.success('Registration successful! (Mock data)');
         return userData;
       }
@@ -159,7 +201,11 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = () => {
     setCurrentUser(null);
+    setToken(null);
     setAdminVerified(false);
+    
+    // Remove token from future requests
+    delete axios.defaults.headers.common['Authorization'];
     
     // Clear user-specific data
     const userId = currentUser?.id || currentUser?._id;
@@ -170,6 +216,7 @@ export const AuthProvider = ({ children }) => {
     
     // Clear general auth data
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     localStorage.removeItem('adminVerified');
     
     // Trigger storage event to update UI components
@@ -178,11 +225,58 @@ export const AuthProvider = ({ children }) => {
     toast.success('Logged out successfully!');
   };
 
-  // Password reset function
-  const resetPassword = async (email) => {
+  // Password reset request function
+  const forgotPassword = async (email) => {
     try {
-      await axios.post(`${API_URL}/auth/reset-password`, { email });
+      const response = await axios.post(`${API_URL}/user/forgot-password`, { email });
       toast.success(`Password reset link sent to ${email}`);
+      return response.data;
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      
+      // For demo purposes - if the backend is not connected, simulate success
+      if (!error.response || error.message.includes('Network Error')) {
+        console.log('Using mock forgot password due to backend connection issue');
+        toast.success(`Password reset link sent to ${email} (Mock)`);
+        return { resetSent: true, mockMode: true };
+      }
+      
+      // Handle specific error cases
+      const errorMessage = error.response?.data?.message || 'Failed to send reset email';
+      toast.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+  };
+
+  // Reset password with token function
+  const resetPassword = async (token, newPassword) => {
+    try {
+      const response = await axios.post(`${API_URL}/user/reset-password`, { 
+        token, 
+        newPassword 
+      });
+      
+      // If successful, update user and token
+      if (response.data.user && response.data.token) {
+        const userData = {
+          id: response.data.user._id,
+          name: response.data.user.fullname,
+          email: response.data.user.email,
+          role: response.data.user.role,
+          passwordLastChanged: response.data.user.passwordLastChanged
+        };
+        
+        setCurrentUser(userData);
+        setToken(response.data.token);
+        
+        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', response.data.token);
+        
+        // Set token for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      }
+      
+      toast.success('Password reset successfully');
       return true;
     } catch (error) {
       console.error('Reset password error:', error);
@@ -190,12 +284,12 @@ export const AuthProvider = ({ children }) => {
       // For demo purposes - if the backend is not connected, simulate success
       if (!error.response || error.message.includes('Network Error')) {
         console.log('Using mock reset password due to backend connection issue');
-        toast.success(`Password reset link sent to ${email} (Mock)`);
+        toast.success('Password reset successfully (Mock)');
         return true;
       }
       
       // Handle specific error cases
-      const errorMessage = error.response?.data?.message || 'Failed to send reset email';
+      const errorMessage = error.response?.data?.message || 'Failed to reset password';
       toast.error(errorMessage);
       throw new Error(errorMessage);
     }
@@ -213,6 +307,10 @@ export const AuthProvider = ({ children }) => {
         userId,
         currentPassword,
         newPassword
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       
       // Upon successful password change, update the stored user data
@@ -248,7 +346,6 @@ export const AuthProvider = ({ children }) => {
           passwordLastChanged: new Date().toISOString()
         };
         
-        // Update local state and storage
         setCurrentUser(updatedUserData);
         localStorage.setItem('user', JSON.stringify(updatedUserData));
         
@@ -256,14 +353,16 @@ export const AuthProvider = ({ children }) => {
         return true;
       }
       
-      // Handle specific error cases
-      if (error.response && error.response.status === 401) {
+      // Handle incorrect current password
+      if (error.response?.status === 401) {
         toast.error('Current password is incorrect');
-      } else {
-        const errorMessage = error.response?.data?.message || 'Failed to update password';
-        toast.error(errorMessage);
+        throw new Error('Current password is incorrect');
       }
-      throw error;
+      
+      // Handle other errors
+      const errorMessage = error.response?.data?.message || 'Failed to update password';
+      toast.error(errorMessage);
+      throw new Error(errorMessage);
     }
   };
 
@@ -278,21 +377,26 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('adminVerified', JSON.stringify(status));
   };
 
+  // Value object to be provided to consumers
   const value = {
     currentUser,
+    loading,
+    adminVerified,
+    setAdminVerified,
     login,
     register,
     logout,
+    forgotPassword,
     resetPassword,
     changePassword,
+    getStorageKey,
     isAdmin,
-    setAsAdmin,
-    loading
+    setAsAdmin
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

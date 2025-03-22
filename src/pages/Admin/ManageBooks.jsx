@@ -207,6 +207,19 @@ const ManageBooks = () => {
   return (
     <div className="bg-slate-900 min-h-screen">
       <div className="max-w-screen-xl mx-auto px-4 py-8">
+        {/* Back button - moved to top */}
+        <div className="mb-6">
+          <button
+            onClick={() => navigate('/admin/dashboard')}
+            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white px-6 py-3 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 hover:shadow-xl"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+            </svg>
+            <span className="font-medium">Back to Dashboard</span>
+          </button>
+        </div>
+
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-white">Manage Books</h1>
           <button
@@ -512,16 +525,6 @@ const ManageBooks = () => {
           </div>
         </div>
       )}
-
-      {/* Back button */}
-      <div className="max-w-screen-xl mx-auto px-4 pt-4">
-        <button
-          onClick={() => navigate('/admin/dashboard')}
-          className="text-gray-300 hover:text-white flex items-center"
-        >
-          ← Back to Dashboard
-        </button>
-      </div>
     </div>
   );
 };

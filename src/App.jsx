@@ -8,18 +8,20 @@ import Navbar from './components/Navbar';
 import Signup from "./components/Signup";
 import { useAuth } from "./context/AuthContext";
 import About from './pages/About';
+import AddBook from "./pages/Admin/AddBook";
 import Dashboard from "./pages/Admin/Dashboard";
 import EmailList from "./pages/Admin/EmailList";
 import ManageBooks from "./pages/Admin/ManageBooks";
-import AddBook from "./pages/Admin/AddBook";
 import OrdersManagement from "./pages/Admin/OrdersManagement";
 import BookDetails from './pages/BookDetails';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Contact from './pages/Contact';
+import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home';
 import OrderSuccess from './pages/OrderSuccess';
 import Profile from './pages/Profile';
+import ResetPassword from './pages/ResetPassword';
 import Wishlist from './pages/Wishlist';
 import PaymentSuccess from "./PaymentSuccess";
 
@@ -64,6 +66,9 @@ export default function App() {
           <Route path="/checkout" element={currentUser ? <Checkout /> : <Navigate to="/signup" />} />
           <Route path="/order-success" element={currentUser ? <OrderSuccess /> : <Navigate to="/" />} />
           <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/signup" />} />
+          {/* Auth Routes */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={currentUser && (currentUser.role === 'admin' || isAdmin()) ? <Dashboard /> : <Navigate to="/" />} />
           <Route path="/admin/books" element={currentUser && (currentUser.role === 'admin' || isAdmin()) ? <ManageBooks /> : <Navigate to="/" />} />
